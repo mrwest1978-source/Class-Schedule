@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. West Class Schedule</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body id="app-body" class="theme-default">
+    <div id="app-container">
+        <h1>👨‍🏫 Mr. West Class Schedule</h1>
+        
+        <div id="quote-container">
+            <p id="quote-text"></p>
+            <p id="quote-author"></p>
+        </div>
+
+        <div id="clock">--:-- --</div>
+        
+        <div id="schedule-display">
+            <ul id="schedule-list">
+                </ul>
+
+            <div id="specials-column">
+                <h2 id="specials-heading">Today's Special:</h2>
+                <p id="current-special-activity">Loading...</p>
+            </div>
+        </div>
+        <div id="settings-section">
+             <h2>Settings</h2>
+             <div id="color-selector">
+                 <label for="theme-select">Color Scheme:</label>
+                 <select id="theme-select" onchange="changeTheme()">
+                     <option value="default">Default (Red/Orange)</option>
+                     <option value="blue">Cool Blue</option>
+                     <option value="purple">Royal Purple</option>
+                 </select>
+             </div>
+        </div>
+        
+        <div id="agenda-input-section">
+            <h2>Customize Schedule</h2>
+            
+            <div id="day-selector">
+                <label for="edit-day-select">Editing Main Schedule For:</label>
+                <select id="edit-day-select" onchange="initializeInput()">
+                    <option value="Monday">Monday</option>
+                    <option value="T-F">Tuesday - Friday</option>
+                </select>
+            </div>
+            
+            <textarea id="schedule-input" rows="8" placeholder="Enter your schedule here, one line per event, using the format: HH:MM,Activity&#10;Example:&#10;08:00,Homeroom&#10;09:00,Math 101&#10;11:00,Lunch Break"></textarea>
+            <button onclick="updateScheduleFromInput()">Save Edited Schedule</button>
+            <p class="input-note">**Use 24-hour time (HH:MM) for best results.**</p>
+            
+            <hr> <div id="specials-input-section">
+                <h3>Edit Weekly Specials</h3>
+                <textarea id="specials-input" rows="6" placeholder="Enter weekly specials here, one line per day, using the format: DayName,Activity&#10;Example:&#10;Monday,Physical Education 🤸&#10;Tuesday,Art 🎨"></textarea>
+                <button onclick="updateSpecialsFromInput()">Save Weekly Specials</button>
+                <p class="input-note">**Specials must be defined for Monday, Tuesday, Wednesday, Thursday, and Friday.**</p>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
