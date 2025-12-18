@@ -6,7 +6,7 @@
     --highlight-text: #0f5132;      
     --quote-border: #007bff;
     --quote-bg: #e3f2fd;
-    --app-bg: #f4f7f6;
+    --app-bg: #fdf2e9; 
 }
 
 .theme-blue {
@@ -16,6 +16,7 @@
     --highlight-text: #006064;
     --quote-border: #0277bd;
     --quote-bg: #e1f5fe;
+    --app-bg: #e3f2fd; 
 }
 
 .theme-purple {
@@ -23,11 +24,12 @@
     --highlight-color: #ab47bc;
     --highlight-bg: #f3e5f5;
     --highlight-text: #4a148c;
-    --quote-border: #8e24aa;
+    --quote-border: #8e24aa;    
     --quote-bg: #f3e5f5;
+    --app-bg: #f3e5f5; 
 }
 
-/* --- Base Layout --- */
+/* --- THE BACKGROUND FIX --- */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
@@ -39,95 +41,68 @@ body {
     justify-content: center; 
     align-items: flex-start; 
     
-    /* Full Background Image Settings */
-background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), 
-                  url(px1280_3a909c3e-34a0-49c2-8f34-5d642ec35f93.png);
+    background-color: var(--app-bg); 
+
+    /* EXACT CODE FOR YOUR IMAGE NAME */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), 
+                      url('px1280_3a909c3e-34a0-49c2-8f34-5d642ec35f93.png'); 
+    
     background-size: cover; 
     background-repeat: no-repeat; 
     background-attachment: fixed; 
     background-position: center;
 }
 
+/* --- APP CONTAINER --- */
 #app-container {
-    background-color: rgba(255, 255, 255, 0.92);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     width: 100%; 
     max-width: 1100px; 
+}
+
+/* --- RIGHT SIDE CARDS (Solid Headers) --- */
+#right-column div {
+    background-color: white;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: left;
+}
+
+#right-column h2 {
+    margin: 0;
+    padding: 12px;
+    color: white;
+    font-size: 1.1em;
     text-align: center;
 }
 
-h1 { color: var(--primary-color); margin-bottom: 20px; font-size: 2.2em; }
+#specials-column h2 { background-color: #007bff; }
+#goals-column h2 { background-color: #2e7d32; }
+#upcoming-events-column h2 { background-color: #e65100; }
 
-#quote-container {
-    margin-bottom: 25px;
-    padding: 15px; 
-    background-color: var(--quote-bg); 
-    border-left: 5px solid var(--quote-border);
-    border-radius: 8px;
+#current-special-activity, #goals-list, #events-list {
+    padding: 15px;
 }
 
-#quote-text { font-style: italic; font-size: 1.2em; color: #333; margin: 0; }
-#quote-author { font-weight: bold; color: var(--quote-border); margin-top: 5px; }
-
-#clock {
-    font-size: 4.5em; 
-    font-weight: 700;
-    margin-bottom: 30px;
-    color: var(--primary-color);
-}
-
-/* --- Two-Column Layout --- */
-#schedule-display {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    margin-bottom: 40px;
-}
-
+/* --- MAIN SCHEDULE LIST --- */
 #schedule-list {
     width: 65%; 
     list-style: none;
     padding: 0;
-    text-align: left;
 }
 
-#right-column {
-    width: 35%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Right Side Cards (Specials, Goals, Events) */
-#specials-column, #goals-column, #upcoming-events-column {
-    border-radius: 10px;
-    padding: 15px;
-    box-sizing: border-box;
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-#specials-column { background-color: #f0f8ff; }
-#goals-column { background-color: #f0fff0; text-align: left; }
-#upcoming-events-column { background-color: #fff8f0; text-align: left; }
-
-h2 { font-size: 1.3em; margin-top: 0; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
-#specials-heading { color: #007bff; }
-#goals-heading { color: #2e7d32; }
-#events-heading { color: #e65100; }
-
-#current-special-activity { font-size: 1.5em; font-weight: bold; margin: 10px 0; }
-#goals-list, #events-list { padding-left: 20px; margin: 10px 0; }
-#goals-list li { margin-bottom: 8px; }
-
-/* Main Schedule Items */
 #schedule-list li {
+    background: white;
     padding: 15px;
     margin-bottom: 10px;
-    border-radius: 8px;
-    background: white;
-    border: 1px solid #ddd;
+    border-radius: 10px;
+    border-left: 5px solid var(--primary-color);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
     font-size: 1.2em;
 }
 
@@ -135,36 +110,21 @@ h2 { font-size: 1.3em; margin-top: 0; border-bottom: 1px solid rgba(0,0,0,0.1); 
     background-color: var(--highlight-bg) !important;
     color: var(--highlight-text);
     font-weight: bold;
-    border-left: 6px solid var(--highlight-color) !important;
+    border-left: 8px solid var(--highlight-color) !important;
 }
 
-.future-activity { opacity: 0.6; }
-
-/* Settings/Input Areas */
-#settings-section, #agenda-input-section {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 2px dashed #ddd;
-    text-align: left;
+/* --- CLOCK AND QUOTE --- */
+#clock {
+    font-size: 4.5em; 
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--primary-color);
 }
 
-textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    font-family: inherit;
+#quote-container {
+    margin-bottom: 20px;
+    padding: 15px; 
+    background-color: var(--quote-bg); 
+    border-left: 5px solid var(--quote-border);
+    border-radius: 8px;
 }
-
-button {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 1em;
-}
-
