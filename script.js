@@ -53,10 +53,21 @@ function updateClock() {
 
 // --- FUNCTION: REFRESH DISPLAY ---
 function updateSchedule() {
-    const now = new Date();
-    const dayIndex = now.getDay();
-    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const todayName = dayNames[dayIndex];
+    // ... (keep the top of your function the same)
+
+    // 2. Display Special
+    document.getElementById('current-special-activity').innerText = dailySpecials[todayName] || "No Special Today";
+
+    // 3. Display Goals
+    const goalsList = document.getElementById('goals-list');
+    goalsList.innerHTML = learningGoals.map(g => `<li>${g}</li>`).join('');
+
+    // 4. Display Events
+    const eventsList = document.getElementById('events-list');
+    eventsList.innerHTML = upcomingEvents.map(e => `<li><strong>${e.date}:</strong> ${e.event}</li>`).join('');
+
+    // ... (rest of function)
+}
 
     // 1. Determine Schedule Type
     if (dayIndex === 1) currentDayType = 'Monday';
@@ -144,3 +155,4 @@ updateSchedule();
 initializeInput('all');
 setInterval(updateClock, 1000);
 setInterval(updateSchedule, 60000);
+
