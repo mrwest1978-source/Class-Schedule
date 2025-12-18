@@ -1,217 +1,146 @@
-// --- SPECIALS DATA (Unchanged) ---
-const dailySpecials = { /* ... */ };
+// --- DATA: SPECIALS ---
+const dailySpecials = {
+    'Monday': 'Physical Education 🤸',
+    'Tuesday': 'Art 🎨',
+    'Wednesday': 'Music 🎶',
+    'Thursday': 'Physical Education 🤸',
+    'Friday': 'Music 🎶'
+};
 
-// --- SCHEDULE DATA (Unchanged - Now loads from localStorage) ---
-let allSchedules = JSON.parse(localStorage.getItem('allSchedules')) || { /* ... */ };
-let currentDailySchedule = []; 
-let currentDayType = ''; 
+// --- DATA: LOAD FROM STORAGE ---
+let allSchedules = JSON.parse(localStorage.getItem('allSchedules')) || {
+    'Monday': [{ time: "08:00", activity: "Assembly 📢" }, { time: "12:00", activity: "Lunch 🍕" }],
+    'T-F': [{ time: "09:00", activity: "Math 📐" }, { time: "12:00", activity: "Lunch 🍕" }]
+};
 
-// --- UPCOMING EVENTS DATA (Unchanged - Now loads from localStorage) ---
-const defaultEvents = [ /* ... */ ];
-let upcomingEvents = JSON.parse(localStorage.getItem('upcomingEvents')) || defaultEvents;
-
-// --- NEW: LEARNING GOALS DATA (Load from LocalStorage or use default) ---
-const defaultGoals = [
-    "I can use 24-hour clock time to accurately track my schedule.",
-    "I can identify and locate today's special class.",
-    "I can state the current learning goals for my core subject area."
+let upcomingEvents = JSON.parse(localStorage.getItem('upcomingEvents')) || [
+    { date: "12/25/2025", event: "Winter Break ❄️" }
 ];
-let learningGoals = JSON.parse(localStorage.getItem('learningGoals')) || defaultGoals;
 
+let learningGoals = JSON.parse(localStorage.getItem('learningGoals')) || [
+    "I can follow my daily schedule.",
+    "I can identify my learning targets."
+];
 
-// --- NEW QUOTE FUNCTION (Unchanged) ---
-async function displayQuoteOfTheDay() { /* ... */ }
+let currentDailySchedule = [];
+let currentDayType = '';
 
-// --- THEME & CLOCK FUNCTIONS (Unchanged) ---
-function changeTheme() { /* ... */ }
-function updateClock() { /* ... */ }
-function selectCurrentSchedule() { /* ... */ }
-
-
-// --- INPUT HANDLING: SCHEDULE (Unchanged) ---
-function updateScheduleFromInput() { 
-    // ... (logic to save allSchedules to localStorage) ...
-}
-
-// --- INPUT HANDLING: EVENTS (Unchanged) ---
-function updateEventsFromInput() {
-    // ... (logic to save upcomingEvents to localStorage) ...
-}
-
-// --- NEW INPUT HANDLING: GOALS (Added function to parse and save goals) ---
-function updateGoalsFromInput() {
-    const inputElement = document.getElementById('goals-input');
-    // Split input by line and filter out empty lines
-    const newGoals = inputElement.value.trim().split('\n').map(g => g.trim()).filter(g => g.length > 0);
-
-    if (newGoals.length > 0) {
-        learningGoals = newGoals;
-        
-        // Save to localStorage
-        localStorage.setItem('learningGoals', JSON.stringify(learningGoals));
-        
-        updateSchedule(); // Refresh display
-        alert("Learning Goals updated and saved successfully!");
-    } else {
-        alert("Please enter at least one learning goal.");
+// --- FUNCTION: FETCH INTERNET QUOTE ---
+async function displayQuoteOfTheDay() {
+    try {
+        const response = await fetch('https://api.quotable.io/random');
+        const data = await response.json();
+        document.getElementById('quote-text').innerText = `“${data.content}”`;
+        document.getElementById('quote-author').innerText = `- ${data.author}`;
+    } catch (error) {
+        document.getElementById('quote-text').innerText = "“The beautiful thing about learning is that no one can take it away from you.”";
+        document.getElementById('quote-author').innerText = "- B.B. King";
     }
 }
 
+// --- FUNCTION: THEME SWITCHER ---
+function changeTheme() {
+    const theme = document.getElementById('theme-select').value;
+    const body = document.getElementById('app-body');
+    body.className = (theme === 'default') ? 'theme-default' : `theme-${theme}`;
+}
 
-// --- SCHEDULE DISPLAY FUNCTION (MODIFIED to include Goals) ---
-function updateSchedule() {
-    const currentDayName = selectCurrentSchedule(); 
-    
-    const list = document.getElementById('schedule-list');
-    const specialElement = document.getElementById('current-special-activity');
-    const goalsListElement = document.getElementById('goals-list'); // NEW
-    const eventsListElement = document.getElementById('events-list');
+// --- FUNCTION: CLOCK ---
+function updateClock() {
     const now = new Date();
+    document.getElementById('clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+// --- FUNCTION: REFRESH DISPLAY ---
+function updateSchedule() {
+    const now = new Date();
+    const dayIndex = now.getDay();
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const todayName = dayNames[dayIndex];
+
+    // 1. Determine Schedule Type
+    if (dayIndex === 1) currentDayType = 'Monday';
+    else if (dayIndex >= 2 && dayIndex <= 5) currentDayType = 'T-F';
+    else currentDayType = 'Weekend';
+
+    currentDailySchedule = (currentDayType === 'Weekend') ? [] : allSchedules[currentDayType];
+
+    // 2. Display Special
+    document.getElementById('current-special-activity').innerText = dailySpecials[todayName] || "No Special Today";
+
+    // 3. Display Goals
+    const goalsList = document.getElementById('goals-list');
+    goalsList.innerHTML = learningGoals.map(g => `<li>${g}</li>`).join('');
+
+    // 4. Display Events
+    const eventsList = document.getElementById('events-list');
+    eventsList.innerHTML = upcomingEvents.map(e => `<li><strong>${e.date}:</strong> ${e.event}</li>`).join('');
+
+    // 5. Display Schedule
+    const list = document.getElementById('schedule-list');
+    list.innerHTML = `<h2>${now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}</h2>`;
     
-    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const dateString = now.toLocaleDateString('en-US', dateOptions);
+    const currentTimeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
 
-    const currentHourMinute = 
-        now.getHours().toString().padStart(2, '0') + 
-        ":" + 
-        now.getMinutes().toString().padStart(2, '0');
-
-    list.innerHTML = ''; 
-
-    // Date Heading
-    const dayHeading = document.createElement('h2');
-    dayHeading.textContent = dateString; 
-    dayHeading.style.textAlign = 'center';
-    dayHeading.style.color = 'var(--primary-color)'; 
-    list.appendChild(dayHeading);
-
-    // 1. Display the Special Activity
-    if (currentDayName in dailySpecials) {
-        specialElement.textContent = dailySpecials[currentDayName];
+    if (currentDailySchedule.length === 0) {
+        list.innerHTML += "<li>🎉 Enjoy your weekend!</li>";
     } else {
-        specialElement.textContent = "No Special Today!";
-    }
-
-    // 2. Display Learning Goals (NEW LOGIC)
-    goalsListElement.innerHTML = ''; 
-    
-    if (learningGoals.length > 0) {
-        learningGoals.forEach(goalText => {
-            const goalListItem = document.createElement('li');
-            goalListItem.textContent = goalText;
-            goalsListElement.appendChild(goalListItem);
+        currentDailySchedule.forEach(item => {
+            const li = document.createElement('li');
+            li.innerText = `${item.time} - ${item.activity}`;
+            li.className = (currentTimeStr >= item.time) ? 'current-activity' : 'future-activity';
+            list.appendChild(li);
         });
-    } else {
-        goalsListElement.innerHTML = '<li>Set your daily learning objectives here!</li>';
     }
-
-
-    // 3. Display Upcoming Events (Unchanged)
-    eventsListElement.innerHTML = ''; 
-    
-    const sortedEvents = upcomingEvents.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        return dateA - dateB;
-    });
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); 
-    
-    let eventCount = 0;
-
-    sortedEvents.forEach(eventData => {
-        const eventDate = new Date(eventData.date);
-        eventDate.setHours(0, 0, 0, 0);
-
-        if (eventDate >= today && eventCount < 5) {
-            const eventListItem = document.createElement('li');
-            
-            const displayDate = eventDate.toLocaleDateString('en-US', {
-                weekday: 'short', 
-                month: 'numeric', 
-                day: 'numeric'
-            });
-
-            eventListItem.textContent = `${displayDate}: ${eventData.event}`;
-            eventsListElement.appendChild(eventListItem);
-            eventCount++;
-        }
-    });
-
-    if (eventCount === 0) {
-        eventsListElement.innerHTML = '<li>No major events scheduled!</li>';
-    }
-
-
-    // 4. Display the Main Schedule (Unchanged)
-    currentDailySchedule.forEach((event) => {
-        const listItem = document.createElement('li');
-        
-        const [hour, minute] = event.time.split(':');
-        const displayHours = parseInt(hour) % 12 || 12;
-        const ampm = parseInt(hour) >= 12 ? 'PM' : 'AM';
-
-        listItem.innerText = `${displayHours}:${minute} ${ampm} - ${event.activity}`;
-
-        if (currentHourMinute >= event.time) {
-            listItem.classList.add('current-activity');
-            listItem.classList.remove('future-activity');
-        } else {
-            listItem.classList.add('future-activity');
-            listItem.classList.remove('current-activity');
-        }
-
-        list.appendChild(listItem);
-    });
 }
 
+// --- FUNCTIONS: SAVE INPUTS ---
+function updateScheduleFromInput() {
+    const input = document.getElementById('schedule-input').value;
+    const day = document.getElementById('edit-day-select').value;
+    allSchedules[day] = input.split('\n').map(line => {
+        const [time, act] = line.split(',');
+        return { time: time?.trim(), activity: act?.trim() };
+    }).filter(i => i.time && i.activity);
+    localStorage.setItem('allSchedules', JSON.stringify(allSchedules));
+    updateSchedule();
+    alert("Schedule Saved!");
+}
 
-// --- INITIALIZATION: Populates the input boxes (Modified for Goals) ---
+function updateGoalsFromInput() {
+    learningGoals = document.getElementById('goals-input').value.split('\n').filter(g => g.trim() !== "");
+    localStorage.setItem('learningGoals', JSON.stringify(learningGoals));
+    updateSchedule();
+    alert("Goals Saved!");
+}
+
+function updateEventsFromInput() {
+    const input = document.getElementById('events-input').value;
+    upcomingEvents = input.split('\n').map(line => {
+        const [date, ev] = line.split(',');
+        return { date: date?.trim(), event: ev?.trim() };
+    }).filter(i => i.date && i.event);
+    localStorage.setItem('upcomingEvents', JSON.stringify(upcomingEvents));
+    updateSchedule();
+    alert("Events Saved!");
+}
+
+// --- INITIALIZE ---
 function initializeInput(type) {
-    // Populate Schedule Input
-    if (type === 'schedule' || type === 'all') {
-        const scheduleInput = document.getElementById('schedule-input');
-        const selectedDayType = document.getElementById('edit-day-select').value; 
-        const scheduleToEdit = allSchedules[selectedDayType];
-        
-        if (scheduleToEdit) {
-             const defaultText = scheduleToEdit.map(e => `${e.time},${e.activity}`).join('\n');
-             scheduleInput.value = defaultText;
-        } else {
-             scheduleInput.value = "Schedule not found.";
-        }
+    if (type === 'all' || type === 'schedule') {
+        const day = document.getElementById('edit-day-select').value;
+        document.getElementById('schedule-input').value = allSchedules[day].map(i => `${i.time},${i.activity}`).join('\n');
     }
-    
-    // Populate Goals Input (NEW LOGIC)
-    if (type === 'goals' || type === 'all') {
-        const goalsInput = document.getElementById('goals-input');
-        const defaultGoalsText = learningGoals.join('\n');
-        goalsInput.value = defaultGoalsText;
-    }
-    
-    // Populate Events Input
-    if (type === 'events' || type === 'all') {
-        const eventsInput = document.getElementById('events-input');
-        
-        const defaultEventsText = upcomingEvents.map(e => `${e.date},${e.event}`).join('\n');
-        eventsInput.value = defaultEventsText;
+    if (type === 'all') {
+        document.getElementById('goals-input').value = learningGoals.join('\n');
+        document.getElementById('events-input').value = upcomingEvents.map(i => `${i.date},${i.event}`).join('\n');
     }
 }
 
-
-// --- FINAL INITIALIZATION (Unchanged) ---
-
-// 0. Display the quote immediately upon loading
+// Start everything
 displayQuoteOfTheDay();
-
-// 1. Update the clock every second (1000ms)
 updateClock();
-setInterval(updateClock, 1000);
-
-// 2. Update the schedule and other data displays every minute (60000ms)
 updateSchedule();
-setInterval(updateSchedule, 60000);
-
-// 3. Initialize all input fields when the page loads
 initializeInput('all');
+setInterval(updateClock, 1000);
+setInterval(updateSchedule, 60000);
