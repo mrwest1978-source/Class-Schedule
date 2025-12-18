@@ -7,12 +7,18 @@
 }
 
 body {
+   body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     margin: 0; padding: 20px;
     background-color: var(--app-bg); 
     background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), 
                       url('px1280_3a909c3e-34a0-49c2-8f34-5d642ec35f93.png'); 
-    background-size: cover; background-repeat: no-repeat; background-attachment: fixed;
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+    /* We removed 'fixed' because it often breaks on iPad Chrome */
+    min-height: 100vh;
+}
 }
 
 #app-container {
@@ -103,3 +109,4 @@ body {
 /* --- INPUT BOXES (Kept smaller for the teacher) --- */
 #agenda-input-section h2, #agenda-input-section h3 { font-size: 1.2em; }
 textarea { width: 100%; font-size: 1em; }
+
