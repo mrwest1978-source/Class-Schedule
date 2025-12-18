@@ -11,75 +11,71 @@
         <h1>👨‍🏫 Mr. West Class Schedule</h1>
         
         <div id="quote-container">
-            <p id="quote-text"></p>
+            <p id="quote-text">Loading inspiration...</p>
             <p id="quote-author"></p>
         </div>
 
-        <div id="clock">--:-- --</div>
+        <div id="clock">00:00 AM</div>
         
         <div id="schedule-display">
-            <ul id="schedule-list">
-                </ul>
+            <div id="schedule-list-container">
+                <h2 id="date-header">Loading Date...</h2>
+                <ul id="schedule-list">
+                    </ul>
+            </div>
 
             <div id="right-column"> 
                 <div id="specials-column">
-                    <h2 id="specials-heading">Today's Special:</h2>
+                    <h2>Today's Special</h2>
                     <p id="current-special-activity">Loading...</p>
                 </div>
                 
                 <div id="goals-column">
-                    <h2 id="goals-heading">Learning Goals:</h2>
-                    <ul id="goals-list">
-                        </ul>
+                    <h2>Learning Goals</h2>
+                    <ul id="goals-list"></ul>
                 </div>
                 
                 <div id="upcoming-events-column">
-                    <h2 id="events-heading">Upcoming Events:</h2>
-                    <ul id="events-list">
-                        </ul>
+                    <h2>Upcoming Events</h2>
+                    <ul id="events-list"></ul>
                 </div>
             </div>
         </div>
+
         <div id="settings-section">
              <h2>Settings</h2>
-             <div id="color-selector">
-                 <label for="theme-select">Color Scheme:</label>
-                 <select id="theme-select" onchange="changeTheme()">
-                     <option value="default">Default (Red/Orange)</option>
-                     <option value="blue">Cool Blue</option>
-                     <option value="purple">Royal Purple</option>
-                 </select>
-             </div>
+             <label for="theme-select">Color Scheme:</label>
+             <select id="theme-select" onchange="changeTheme()">
+                 <option value="default">Default (Red/Orange)</option>
+                 <option value="blue">Cool Blue</option>
+                 <option value="purple">Royal Purple</option>
+             </select>
         </div>
         
         <div id="agenda-input-section">
             <h2>Customize Data</h2>
 
             <h3>Edit Daily Schedule</h3>
-            <div id="day-selector">
-                <label for="edit-day-select">Editing Schedule For:</label>
-                <select id="edit-day-select" onchange="initializeInput('schedule')">
-                    <option value="Monday">Monday</option>
-                    <option value="T-F">Tuesday - Friday</option>
-                </select>
-            </div>
+            <select id="edit-day-select" onchange="initializeInput('schedule')">
+                <option value="Monday">Monday</option>
+                <option value="T-F">Tuesday - Friday</option>
+            </select>
+            <textarea id="schedule-input" rows="5"></textarea>
+            <button onclick="updateScheduleFromInput()">Save Schedule</button>
             
-            <textarea id="schedule-input" rows="8" placeholder="Enter your schedule here, one line per event, using the format: HH:MM,Activity&#10;Example:&#10;08:00,Homeroom&#10;09:00,Math 101&#10;11:00,Lunch Break"></textarea>
-            <button onclick="updateScheduleFromInput()">Save Edited Schedule</button>
-            <p class="input-note">**Use 24-hour time (HH:MM) for best results.**</p>
-            
-            <h3 style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 20px;">Edit Daily Learning Goals</h3>
-            <textarea id="goals-input" rows="5" placeholder="Enter daily goals here, one line per goal.&#10;Example:&#10;I can use the quadratic formula.&#10;I can identify the main theme."></textarea>
-            <button onclick="updateGoalsFromInput()">Save Learning Goals</button>
-            <p class="input-note">**These goals will display every day.**</p>
+            <h3>Edit Weekly Specials</h3>
+            <textarea id="specials-input" rows="5" placeholder="Monday,Art"></textarea>
+            <button onclick="updateSpecialsFromInput()">Save Specials</button>
 
-            <h3 style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 20px;">Edit Upcoming Events</h3>
-            <textarea id="events-input" rows="8" placeholder="Enter upcoming events here, one line per event, using the format: MM/DD/YYYY,Event Description&#10;Example:&#10;12/20/2025,Holiday Concert&#10;01/05/2026,School Resumes"></textarea>
-            <button onclick="updateEventsFromInput()">Save Upcoming Events</button>
-            <p class="input-note">**Use MM/DD/YYYY format for dates.**</p>
+            <h3>Edit Learning Goals</h3>
+            <textarea id="goals-input" rows="5"></textarea>
+            <button onclick="updateGoalsFromInput()">Save Learning Goals</button>
+
+            <h3>Edit Upcoming Events</h3>
+            <textarea id="events-input" rows="5" placeholder="MM/DD/YYYY,Event"></textarea>
+            <button onclick="updateEventsFromInput()">Save Events</button>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
