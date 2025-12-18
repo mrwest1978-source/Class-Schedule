@@ -39,13 +39,44 @@ h1 { font-size: 2.5em; color: var(--primary-color); }
 
 /* --- TWO COLUMN LAYOUT --- */
 /* --- THE TWO-COLUMN ALIGNMENT FIX --- */
+/* --- THE PERFECT ALIGNMENT FIX --- */
+
+/* 1. This makes the two columns sit side-by-side */
 #schedule-display {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start; /* This is the 'Magic Glue' that lines up the tops */
+    align-items: flex-start; /* Lines up the tops of the boxes */
     gap: 30px;
-    margin-top: 20px; /* Adds a little breathing room under the clock */
+    margin-top: 80px; /* This creates space for the Date heading to float above */
+    position: relative; /* This is the anchor for the Date */
+}
+
+/* 2. This makes the Date 'Float' so it doesn't push the left column down */
+#schedule-list h2 {
+    position: absolute;
+    top: -60px; /* Moves the date up and out of the way */
+    left: 0;
+    width: 60%; /* Matches the width of the schedule list */
+    margin: 0;
+    font-size: 2em;
+    text-align: left;
+    color: var(--primary-color);
+}
+
+/* 3. Make sure the Right Column starts at the EXACT same height */
+#right-column {
+    width: 38%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* 4. Remove any extra space from the top of the boxes */
+#specials-column, #schedule-list li:first-child {
+    margin-top: 0 !important;
+}
 }
 
 /* Ensure the titles inside the columns don't create extra space */
@@ -144,4 +175,5 @@ h1 { font-size: 2.5em; color: var(--primary-color); }
     transform: scale(1.02);
     border-left: 12px solid var(--highlight-color) !important;
 }
+
 
