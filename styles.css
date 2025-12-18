@@ -1,4 +1,4 @@
-/* --- THEME DEFINITIONS --- */
+/* --- THEME COLORS --- */
 :root, .theme-default {
     --primary-color: #8b0000;       
     --highlight-color: #e65100;     
@@ -9,75 +9,82 @@
     --app-bg: #fdf2e9; 
 }
 
-.theme-blue {
-    --primary-color: #0056b3;
-    --highlight-color: #00bcd4;
-    --highlight-bg: #e0f7fa;
-    --highlight-text: #006064;
-    --quote-border: #0277bd;
-    --quote-bg: #e1f5fe;
-    --app-bg: #e3f2fd; 
-}
-
-.theme-purple {
-    --primary-color: #6a1b9a;
-    --highlight-color: #ab47bc;
-    --highlight-bg: #f3e5f5;
-    --highlight-text: #4a148c;
-    --quote-border: #8e24aa;    
-    --quote-bg: #f3e5f5;
-    --app-bg: #f3e5f5; 
-}
-
-/* --- THE BACKGROUND FIX --- */
+/* --- THE BACKGROUND --- */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    min-height: 100vh; 
     margin: 0; 
     padding: 20px; 
-    box-sizing: border-box; 
-    display: flex;
-    justify-content: center; 
-    align-items: flex-start; 
-    
     background-color: var(--app-bg); 
-
-    /* EXACT CODE FOR YOUR IMAGE NAME */
     background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), 
                       url('px1280_3a909c3e-34a0-49c2-8f34-5d642ec35f93.png'); 
-    
     background-size: cover; 
     background-repeat: no-repeat; 
     background-attachment: fixed; 
     background-position: center;
 }
 
-/* --- APP CONTAINER --- */
 #app-container {
     background-color: rgba(255, 255, 255, 0.95);
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    width: 100%; 
-    max-width: 1100px; 
+    width: 95%; 
+    max-width: 1400px; /* Wider for iPad Landscape */
+    margin: auto;
 }
 
-/* --- RIGHT SIDE CARDS (Solid Headers) --- */
+/* --- FONT SIZE BUMP --- */
+h1 { font-size: 2.5em; color: var(--primary-color); }
+#clock { font-size: 5.5em; font-weight: 800; color: var(--primary-color); margin: 10px 0; }
+
+/* --- TWO COLUMN LAYOUT --- */
+#schedule-display {
+    display: flex;
+    flex-direction: row; /* Puts them side-by-side */
+    justify-content: space-between;
+    gap: 30px;
+}
+
+/* Left Column: Schedule */
+#schedule-list {
+    width: 60%; 
+    list-style: none;
+    padding: 0;
+}
+
+#schedule-list h2 { font-size: 2em; margin-bottom: 20px; }
+
+#schedule-list li {
+    background: white;
+    padding: 20px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    border-left: 8px solid var(--primary-color);
+    font-size: 1.5em; /* MUCH BIGGER FONT */
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Right Column: Specials, Goals, Events */
+#right-column {
+    width: 38%;
+    display: flex;
+    flex-direction: column;
+}
+
 #right-column div {
     background-color: white;
-    border-radius: 12px;
-    margin-bottom: 20px;
+    border-radius: 15px;
+    margin-bottom: 25px;
     border: 2px solid rgba(0,0,0,0.1);
     overflow: hidden;
-    text-align: left;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
 }
 
 #right-column h2 {
     margin: 0;
-    padding: 12px;
+    padding: 15px;
     color: white;
-    font-size: 1.1em;
+    font-size: 1.5em; /* BIGGER HEADERS */
     text-align: center;
 }
 
@@ -85,46 +92,24 @@ body {
 #goals-column h2 { background-color: #2e7d32; }
 #upcoming-events-column h2 { background-color: #e65100; }
 
-#current-special-activity, #goals-list, #events-list {
-    padding: 15px;
+/* Content inside the boxes */
+#current-special-activity {
+    font-size: 2em; /* BIGGER SPECIALS TEXT */
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
 }
 
-/* --- MAIN SCHEDULE LIST --- */
-#schedule-list {
-    width: 65%; 
-    list-style: none;
-    padding: 0;
+#goals-list, #events-list {
+    padding: 20px;
+    font-size: 1.4em; /* BIGGER LIST TEXT */
+    line-height: 1.5;
 }
 
-#schedule-list li {
-    background: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    border-left: 5px solid var(--primary-color);
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-    font-size: 1.2em;
-}
-
+/* Highlight for current activity */
 .current-activity {
     background-color: var(--highlight-bg) !important;
-    color: var(--highlight-text);
-    font-weight: bold;
-    border-left: 8px solid var(--highlight-color) !important;
-}
-
-/* --- CLOCK AND QUOTE --- */
-#clock {
-    font-size: 4.5em; 
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: var(--primary-color);
-}
-
-#quote-container {
-    margin-bottom: 20px;
-    padding: 15px; 
-    background-color: var(--quote-bg); 
-    border-left: 5px solid var(--quote-border);
-    border-radius: 8px;
+    color: var(--highlight-text) !important;
+    transform: scale(1.02);
+    border-left: 12px solid var(--highlight-color) !important;
 }
