@@ -1,23 +1,91 @@
-/* --- Root Colors (CSS Variables) --- */
-/* ... (Themes definitions remain unchanged) ... */
+/* --- THEME DEFINITIONS --- */
+:root, .theme-default {
+    --primary-color: #8b0000;       
+    --highlight-color: #e65100;     
+    --highlight-bg: #ffe0b2;        
+    --highlight-text: #0f5132;      
+    --quote-border: #007bff;
+    --quote-bg: #e3f2fd;
+    --app-bg: #f4f7f6;
+}
 
-/* --- Base Layout & iPad Pro Optimization (Unchanged) --- */
-body { /* ... */ }
-#app-container { /* ... */ }
+.theme-blue {
+    --primary-color: #0056b3;
+    --highlight-color: #00bcd4;
+    --highlight-bg: #e0f7fa;
+    --highlight-text: #006064;
+    --quote-border: #0277bd;
+    --quote-bg: #e1f5fe;
+}
 
-/* ... (H1, Quote, Clock styles unchanged) ... */
+.theme-purple {
+    --primary-color: #6a1b9a;
+    --highlight-color: #ab47bc;
+    --highlight-bg: #f3e5f5;
+    --highlight-text: #4a148c;
+    --quote-border: #8e24aa;
+    --quote-bg: #f3e5f5;
+}
 
-/* --- Two-Column Display --- */
+/* --- Base Layout --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    min-height: 100vh; 
+    margin: 0; 
+    padding: 20px; 
+    box-sizing: border-box; 
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start; 
+    
+    /* Full Background Image Settings */
+    background-image: url('http://googleusercontent.com/image_generation_content/0');
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    background-position: center;
+}
+
+#app-container {
+    background-color: rgba(255, 255, 255, 0.92);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 100%; 
+    max-width: 1100px; 
+    text-align: center;
+}
+
+h1 { color: var(--primary-color); margin-bottom: 20px; font-size: 2.2em; }
+
+#quote-container {
+    margin-bottom: 25px;
+    padding: 15px; 
+    background-color: var(--quote-bg); 
+    border-left: 5px solid var(--quote-border);
+    border-radius: 8px;
+}
+
+#quote-text { font-style: italic; font-size: 1.2em; color: #333; margin: 0; }
+#quote-author { font-weight: bold; color: var(--quote-border); margin-top: 5px; }
+
+#clock {
+    font-size: 4.5em; 
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+
+/* --- Two-Column Layout --- */
 #schedule-display {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 30px; 
-    margin-bottom: 30px;
+    gap: 30px;
+    margin-bottom: 40px;
 }
 
 #schedule-list {
-    /* Left Column: Main Schedule - Takes up 65% */
     width: 65%; 
     list-style: none;
     padding: 0;
@@ -25,71 +93,76 @@ body { /* ... */ }
 }
 
 #right-column {
-    /* Right Column Container - Takes up 35% */
     width: 35%;
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Space between Specials, Goals, and Events */
+    gap: 20px;
 }
 
-/* Specials Column (Top Right) - MADE SMALLER */
-#specials-column {
-    text-align: center;
-    background-color: #f0f8ff; 
-    border: 1px solid #d0e0ff;
+/* Right Side Cards (Specials, Goals, Events) */
+#specials-column, #goals-column, #upcoming-events-column {
     border-radius: 10px;
-    padding: 15px 15px; /* Reduced vertical padding */
+    padding: 15px;
     box-sizing: border-box;
-    font-weight: bold;
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
-#specials-heading {
-    font-size: 1.2em; /* Smaller heading */
-    color: #007bff; 
-    margin-top: 0;
+#specials-column { background-color: #f0f8ff; }
+#goals-column { background-color: #f0fff0; text-align: left; }
+#upcoming-events-column { background-color: #fff8f0; text-align: left; }
+
+h2 { font-size: 1.3em; margin-top: 0; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
+#specials-heading { color: #007bff; }
+#goals-heading { color: #2e7d32; }
+#events-heading { color: #e65100; }
+
+#current-special-activity { font-size: 1.5em; font-weight: bold; margin: 10px 0; }
+#goals-list, #events-list { padding-left: 20px; margin: 10px 0; }
+#goals-list li { margin-bottom: 8px; }
+
+/* Main Schedule Items */
+#schedule-list li {
+    padding: 15px;
     margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid #d0e0ff;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #ddd;
+    font-size: 1.2em;
 }
 
-#current-special-activity {
-    font-size: 1.4em; /* Smaller text */
-    color: #333;
-    padding: 5px 0;
+.current-activity {
+    background-color: var(--highlight-bg) !important;
+    color: var(--highlight-text);
+    font-weight: bold;
+    border-left: 6px solid var(--highlight-color) !important;
 }
 
-/* --- NEW: Learning Goals Column (Middle Right) --- */
-#goals-column {
-    text-align: center;
-    background-color: #f0fff0; /* Light green background */
-    border: 1px solid #c8e6c9;
-    border-radius: 10px;
-    padding: 20px 15px;
-    box-sizing: border-box;
-}
+.future-activity { opacity: 0.6; }
 
-#goals-heading {
-    font-size: 1.4em;
-    color: #388e3c; /* Green color for goals */
-    margin-top: 0;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #c8e6c9;
-}
-
-#goals-list {
-    list-style-type: '🎯 '; /* Custom bullet point */
-    padding-left: 15px;
+/* Settings/Input Areas */
+#settings-section, #agenda-input-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px dashed #ddd;
     text-align: left;
 }
 
-#goals-list li {
-    font-size: 1.1em;
-    padding: 5px 0;
-    color: #1b5e20;
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    font-family: inherit;
 }
-/* --- END NEW GOALS --- */
 
-/* Upcoming Events Column (Bottom Right) */
-#upcoming-events-column { /* ... (Remains unchanged) ... */ }
-/* ... (Rest of styles unchanged) ... */
+button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1em;
+}
