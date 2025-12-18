@@ -38,11 +38,42 @@ h1 { font-size: 2.5em; color: var(--primary-color); }
 #clock { font-size: 5.5em; font-weight: 800; color: var(--primary-color); margin: 10px 0; }
 
 /* --- TWO COLUMN LAYOUT --- */
+/* --- THE TWO-COLUMN ALIGNMENT FIX --- */
 #schedule-display {
     display: flex;
-    flex-direction: row; /* Puts them side-by-side */
+    flex-direction: row;
     justify-content: space-between;
+    align-items: flex-start; /* This is the 'Magic Glue' that lines up the tops */
     gap: 30px;
+    margin-top: 20px; /* Adds a little breathing room under the clock */
+}
+
+/* Ensure the titles inside the columns don't create extra space */
+#schedule-list h2 {
+    margin-top: 0; /* Keeps the 'Date' heading flush with the top */
+    font-size: 2em;
+    color: var(--primary-color);
+}
+
+/* Left Column Width */
+#schedule-list {
+    width: 60%; 
+    margin: 0;
+    padding: 0;
+}
+
+/* Right Column Width and Alignment */
+#right-column {
+    width: 38%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0; /* Ensures it starts at the exact same height as the date */
+}
+
+/* This adds a tiny bit of padding to the top of the Specials box 
+   so it looks perfectly level with the text on the left */
+#specials-column {
+    margin-top: 5px; 
 }
 
 /* Left Column: Schedule */
@@ -113,3 +144,4 @@ h1 { font-size: 2.5em; color: var(--primary-color); }
     transform: scale(1.02);
     border-left: 12px solid var(--highlight-color) !important;
 }
+
