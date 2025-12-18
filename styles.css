@@ -1,111 +1,62 @@
-// --- DATA LOADING ---
-let dailySpecials = JSON.parse(localStorage.getItem('dailySpecials')) || {
-    'Monday': 'PE', 'Tuesday': 'Art', 'Wednesday': 'Music', 'Thursday': 'PE', 'Friday': 'Music'
-};
-let allSchedules = JSON.parse(localStorage.getItem('allSchedules')) || {
-    'Monday': [{time:"08:00", activity:"Arrival"}], 'T-F': [{time:"09:00", activity:"Math"}]
-};
-let learningGoals = JSON.parse(localStorage.getItem('learningGoals')) || ["Target 1", "Target 2"];
-let upcomingEvents = JSON.parse(localStorage.getItem('upcomingEvents')) || [];
-
-// --- CLOCK & QUOTE ---
-function updateClock() {
-    const now = new Date();
-    document.getElementById('clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+:root {
+    --primary-color: #8b0000;       
+    --highlight-bg: #ffe0b2;        
+    --highlight-color: #e65100;     
+    --app-bg: #fdf2e9; 
 }
 
-async function displayQuote() {
-    try {
-        const res = await fetch('https://api.quotable.io/random');
-        const data = await res.json();
-        document.getElementById('quote-text').innerText = `“${data.content}”`;
-        document.getElementById('quote-author').innerText = `- ${data.author}`;
-    } catch (e) {
-        document.getElementById('quote-text').innerText = "“Education is the most powerful weapon which you can use to change the world.”";
-    }
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    margin: 0; padding: 20px;
+    background-color: var(--app-bg); 
+    background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), 
+                      url('px1280_3a909c3e-34a0-49c2-8f34-5d642ec35f93.png'); 
+    background-size: cover; background-repeat: no-repeat; background-attachment: fixed;
 }
 
-// --- MAIN UPDATE ---
-function updateSchedule() {
-    const now = new Date();
-    const todayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][now.getDay()];
-    const currentTimeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-
-    // Date
-    document.getElementById('date-header').innerText = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
-
-    // Specials
-    document.getElementById('current-special-activity').innerText = dailySpecials[todayName] || "No Special Today";
-
-    // Goals
-    document.getElementById('goals-list').innerHTML = learningGoals.map(g => `<li>${g}</li>`).join('');
-
-    // Events
-    document.getElementById('events-list').innerHTML = upcomingEvents.map(e => `<li>${e.date}: ${e.event}</li>`).join('');
-
-    // Schedule Items
-    const dayType = (todayName === 'Monday') ? 'Monday' : 'T-F';
-    const list = document.getElementById('schedule-list');
-    list.innerHTML = "";
-    (allSchedules[dayType] || []).forEach(item => {
-        const li = document.createElement('li');
-        li.innerText = `${item.time} - ${item.activity}`;
-        if (currentTimeStr >= item.time) li.classList.add('current-activity');
-        list.appendChild(li);
-    });
+#app-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px; border-radius: 20px;
+    width: 95%; max-width: 1200px; margin: auto;
 }
 
-// --- INPUTS & SAVING ---
-function updateSpecialsFromInput() {
-    const val = document.getElementById('specials-input').value;
-    let obj = {};
-    val.split('\n').forEach(l => { const [d, a] = l.split(','); if(d&&a) obj[d.trim()] = a.trim(); });
-    dailySpecials = obj;
-    localStorage.setItem('dailySpecials', JSON.stringify(dailySpecials));
-    updateSchedule();
+#clock { font-size: 5.5em; font-weight: 800; color: var(--primary-color); text-align: center; margin: 10px 0; }
+
+#schedule-display {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 30px; margin-top: 80px; position: relative;
 }
 
-function updateGoalsFromInput() {
-    learningGoals = document.getElementById('goals-input').value.split('\n').filter(g => g.trim() !== "");
-    localStorage.setItem('learningGoals', JSON.stringify(learningGoals));
-    updateSchedule();
+#date-header {
+    position: absolute; top: -70px; left: 0;
+    font-size: 2.2em; color: var(--primary-color); margin: 0;
 }
 
-function updateEventsFromInput() {
-    const val = document.getElementById('events-input').value;
-    upcomingEvents = val.split('\n').map(l => { const [d, e] = l.split(','); return {date:d?.trim(), event:e?.trim()}; }).filter(i => i.date);
-    localStorage.setItem('upcomingEvents', JSON.stringify(upcomingEvents));
-    updateSchedule();
+#schedule-list-container { width: 60%; }
+#schedule-list { list-style: none; padding: 0; margin: 0; }
+
+#schedule-list li {
+    background: white; padding: 20px; margin-bottom: 12px;
+    border-radius: 12px; border-left: 8px solid var(--primary-color);
+    font-size: 1.5em; box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
 }
 
-function updateScheduleFromInput() {
-    const day = document.getElementById('edit-day-select').value;
-    const val = document.getElementById('schedule-input').value;
-    allSchedules[day] = val.split('\n').map(l => { const [t, a] = l.split(','); return {time:t?.trim(), activity:a?.trim()}; }).filter(i => i.time);
-    localStorage.setItem('allSchedules', JSON.stringify(allSchedules));
-    updateSchedule();
+.current-activity {
+    background-color: var(--highlight-bg) !important;
+    border-left: 12px solid var(--highlight-color) !important;
+    font-weight: bold;
 }
 
-function initializeInput(type) {
-    if (type === 'all' || type === 'schedule') {
-        const day = document.getElementById('edit-day-select').value;
-        document.getElementById('schedule-input').value = (allSchedules[day] || []).map(i => `${i.time},${i.activity}`).join('\n');
-    }
-    if (type === 'all') {
-        document.getElementById('specials-input').value = Object.entries(dailySpecials).map(([d, a]) => `${d},${a}`).join('\n');
-        document.getElementById('goals-input').value = learningGoals.join('\n');
-        document.getElementById('events-input').value = upcomingEvents.map(i => `${i.date},${i.event}`).join('\n');
-    }
-}
+#right-column { width: 35%; display: flex; flex-direction: column; gap: 20px; }
+#right-column div { background: white; border-radius: 15px; overflow: hidden; border: 2px solid rgba(0,0,0,0.1); }
+#right-column h2 { margin: 0; padding: 15px; color: white; text-align: center; font-size: 1.5em; }
 
-function changeTheme() {
-    document.getElementById('app-body').className = 'theme-' + document.getElementById('theme-select').value;
-}
+#specials-column h2 { background-color: #007bff; }
+#goals-column h2 { background-color: #2e7d32; }
+#upcoming-events-column h2 { background-color: #e65100; }
 
-// Start
-displayQuote();
-updateClock();
-updateSchedule();
-initializeInput('all');
-setInterval(updateClock, 1000);
-setInterval(updateSchedule, 60000);
+#current-special-activity { font-size: 2em; font-weight: bold; text-align: center; padding: 20px; }
+#goals-list, #events-list { padding: 15px; font-size: 1.3em; }
+
+textarea { width: 100%; margin: 10px 0; }
+button { width: 100%; padding: 10px; background: var(--primary-color); color: white; border: none; cursor: pointer; border-radius: 5px; }
