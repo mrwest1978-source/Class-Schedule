@@ -40,7 +40,8 @@ body {
     align-items: flex-start; 
     
     /* Full Background Image Settings */
-    background-image: url('http://googleusercontent.com/image_generation_content/0');
+background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), 
+                  url(px1280_3a909c3e-34a0-49c2-8f34-5d642ec35f93.png);
     background-size: cover; 
     background-repeat: no-repeat; 
     background-attachment: fixed; 
@@ -166,3 +167,4 @@ button {
     width: 100%;
     font-size: 1em;
 }
+
