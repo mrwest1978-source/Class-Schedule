@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Mr. West Class Schedule</title>
-    <link rel="stylesheet" href="styles.css?v=3">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. West Schedule</title>
+    <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
     <div id="app-container">
@@ -41,11 +42,10 @@
             </div>
         </div>
 
-    <div id="input-section">
-    <h2>⚙️ Edit Classroom Data</h2>
-    </div>
+        <button onclick="toggleEdit()" id="toggle-btn">⚙️ Open Edit Mode</button>
 
-<button onclick="toggleEdit()" style="width:100%; opacity:0.4; margin-top:20px; padding:10px;">⚙️ Edit Mode</button>
+        <div id="input-section">
+            <h2>⚙️ Edit Classroom Data</h2>
             <div class="input-group">
                 <label>Select Day to Edit:</label>
                 <select id="day-selector" onchange="initializeInputs()">
@@ -68,11 +68,7 @@
             </div>
             <button onclick="saveAllData()" id="save-btn">💾 SAVE ALL CHANGES</button>
         </div>
-<button onclick="toggleEdit()" style="width:100%; opacity:0.4; margin-top:10px; background:none; border:1px solid #ccc; border-radius:5px;">⚙️ Edit Mode</button>
     </div>
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=4"></script>
 </body>
 </html>
-
-
-
