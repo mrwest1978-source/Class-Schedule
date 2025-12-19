@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mr. West Schedule</title>
-    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
     <div id="app-container">
@@ -42,33 +42,39 @@
             </div>
         </div>
 
-        <button onclick="toggleSection()" id="toggle-btn">⚙️ Open Edit Mode</button>
-
         <div id="input-section">
-            <h2>⚙️ Edit Classroom Data</h2>
+            <h2 style="color: #8b0000; border-bottom: 2px solid #8b0000; padding-bottom: 10px;">⚙️ Edit Classroom Data</h2>
+            
             <div class="input-group">
-                <label>Select Day to Edit:</label>
+                <label>1. Select Day to Edit:</label>
                 <select id="day-selector" onchange="initializeInputs()">
                     <option value="Monday">Monday</option>
                     <option value="T-F">Tuesday - Friday</option>
                 </select>
-                <textarea id="input-schedule" placeholder="08:00,Arrival"></textarea>
+                <p><small>Format: 08:00,Arrival (One per line)</small></p>
+                <textarea id="input-schedule" rows="6"></textarea>
             </div>
+
             <div class="input-group">
-                <label>Weekly Specials (Day,Activity):</label>
-                <textarea id="input-specials" placeholder="Monday,Art"></textarea>
+                <label>2. Weekly Specials:</label>
+                <p><small>Format: Monday,Art (One per line)</small></p>
+                <textarea id="input-specials" rows="5"></textarea>
             </div>
+
             <div class="input-group">
-                <label>Learning Goals:</label>
-                <textarea id="input-goals"></textarea>
+                <label>3. Learning Goals:</label>
+                <textarea id="input-goals" rows="3"></textarea>
             </div>
+
             <div class="input-group">
-                <label>Events (Date,Event):</label>
-                <textarea id="input-events"></textarea>
+                <label>4. Upcoming Events:</label>
+                <p><small>Format: 12/25,Holiday (One per line)</small></p>
+                <textarea id="input-events" rows="3"></textarea>
             </div>
+
             <button onclick="saveAllData()" id="save-btn">💾 SAVE ALL CHANGES</button>
         </div>
     </div>
-    <script src="script.js?v=5"></script>
+    <script src="script.js?v=6"></script>
 </body>
 </html>
