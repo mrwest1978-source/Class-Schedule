@@ -1,49 +1,46 @@
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    margin: 0; padding: 15px;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), 
+    margin: 0; padding: 10px; /* Reduced padding */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
                       url('px1280_3a909c3e-34a0-49c2-8f34-5d642ec35f93.png'); 
-    background-size: cover; background-position: center; background-attachment: fixed;
+    background-size: cover; background-position: center;
 }
 
 #app-container {
     background-color: rgba(255, 255, 255, 0.96);
-    padding: 20px; border-radius: 20px;
-    max-width: 1000px; margin: auto;
+    padding: 15px; border-radius: 15px;
+    max-width: 950px; margin: auto;
 }
 
-#main-title { text-align: center; font-size: 2em; color: #8b0000; }
+#main-title { text-align: center; font-size: 1.5em; color: #8b0000; margin: 5px 0; }
 
-/* QUOTE AREA */
-#quote-container { border-left: 10px solid #8b0000; padding: 20px; background: #f9f9f9; margin-bottom: 20px; }
-#quote-text { font-size: 2.2em; font-weight: 900; color: #222; line-height: 1.2; }
-#quote-author { font-size: 1.4em; text-align: right; margin-top: 10px; }
+/* COMPACT QUOTE */
+#quote-container { border-left: 6px solid #8b0000; padding: 10px 15px; background: #f9f9f9; margin-bottom: 10px; }
+#quote-text { font-size: 1.6em; font-weight: 800; color: #222; line-height: 1.1; }
+#quote-author { font-size: 1.1em; text-align: right; }
 
-#clock { font-size: 6em; font-weight: 900; text-align: center; color: #8b0000; margin: 10px 0; }
+#clock { font-size: 4em; font-weight: 900; text-align: center; color: #8b0000; margin: 5px 0; }
 
-/* STACKED LAYOUT FOR IPAD PORTRAIT */
-#schedule-display { display: flex; flex-direction: column; gap: 30px; }
+/* STACKED LAYOUT */
+#schedule-display { display: flex; flex-direction: column; gap: 15px; }
 
-.section-label { font-size: 2.5em; color: #8b0000; margin-bottom: 5px; border-bottom: 4px solid #8b0000; }
-#date-header { font-size: 2em; margin-top: 0; color: #444; }
+.section-label { font-size: 1.8em; color: #8b0000; margin-bottom: 2px; border-bottom: 3px solid #8b0000; }
+#date-header { font-size: 1.4em; margin-top: 0; color: #444; margin-bottom: 10px; }
 
 #schedule-list { list-style: none; padding: 0; }
 #schedule-list li {
-    background: white; padding: 25px; margin-bottom: 15px; font-size: 2em;
-    border-left: 15px solid #8b0000; border-radius: 10px; font-weight: 800;
-    box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
+    background: white; padding: 12px 20px; margin-bottom: 8px; font-size: 1.5em;
+    border-left: 10px solid #8b0000; border-radius: 8px; font-weight: 700;
 }
 
 .current-activity { background: #ffe0b2 !important; border-left-color: #e65100 !important; }
 
-/* INFO BOXES */
-.info-box { background: white; border-radius: 15px; overflow: hidden; border: 3px solid #ddd; margin-bottom: 20px; }
-.box-header { margin: 0; padding: 20px; color: white; text-align: center; font-size: 2.2em; font-weight: 900; }
-#special-activity { font-size: 3.5em; font-weight: 900; text-align: center; padding: 30px; margin: 0; color: #007bff; }
-#goals-list, #events-list { font-size: 1.8em; padding: 20px; font-weight: 700; line-height: 1.5; }
+/* COMPACT INFO BOXES */
+.info-box { background: white; border-radius: 10px; overflow: hidden; border: 2px solid #ddd; margin-bottom: 10px; }
+.box-header { margin: 0; padding: 10px; color: white; text-align: center; font-size: 1.6em; font-weight: 800; }
+#special-activity { font-size: 2.2em; font-weight: 900; text-align: center; padding: 15px; margin: 0; color: #007bff; }
+#goals-list, #events-list { font-size: 1.3em; padding: 10px 25px; font-weight: 600; margin: 0; }
 
-/* TEACHER INPUTS */
-#input-section { background: #eee; padding: 20px; border-radius: 15px; margin-top: 50px; }
-.input-group { margin-bottom: 15px; }
-textarea { width: 100%; font-size: 1.2em; padding: 10px; box-sizing: border-box; }
-#save-btn { width: 100%; padding: 25px; background: #2e7d32; color: white; font-size: 1.8em; font-weight: 900; border-radius: 15px; border: none; cursor: pointer; }
+/* HIDE EDIT SECTION BY DEFAULT TO SAVE SPACE */
+#input-section { display: none; background: #eee; padding: 15px; border-radius: 10px; margin-top: 20px; }
+#input-section.visible { display: block; }
