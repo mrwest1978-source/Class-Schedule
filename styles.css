@@ -42,6 +42,13 @@ body {
 #goals-list, #events-list { font-size: 1.3em; padding: 10px 25px; font-weight: 600; margin: 0; }
 
 /* HIDE EDIT SECTION BY DEFAULT TO SAVE SPACE */
-#input-section { display: none; background: #eee; padding: 15px; border-radius: 10px; margin-top: 20px; }
-#input-section.visible { display: block; }
+#input-section { 
+    display: none; /* Starts hidden */
+    background: #eee; 
+    padding: 15px; 
+    border-radius: 10px; 
+    margin-top: 20px; 
+    border: 2px solid #ccc;
+}
+
 
