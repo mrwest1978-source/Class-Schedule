@@ -1,76 +1,74 @@
-let dailySpecials = JSON.parse(localStorage.getItem('dailySpecials')) || {
-    'Monday': 'Art', 'Tuesday': 'Music', 'Wednesday': 'PE', 'Thursday': 'Media', 'Friday': 'PE'
+let data = JSON.parse(localStorage.getItem('mrWestData')) || {
+    specials: {"Monday":"Art", "Tuesday":"Music", "Wednesday":"PE", "Thursday":"Library", "Friday":"PE"},
+    goals: ["Stay Focused", "Work Together"],
+    events: [{date: "12/20", title: "Winter Break"}],
+    schedules: { "Monday": [{t:"08:00", a:"Arrival"}], "T-F": [{t:"08:15", a:"Morning Work"}] }
 };
-let allSchedules = JSON.parse(localStorage.getItem('allSchedules')) || {
-    'Monday': [{time:"08:00", activity:"Arrival"}], 
-    'T-F': [{time:"08:30", activity:"Morning Meeting"}]
-};
-let learningGoals = JSON.parse(localStorage.getItem('learningGoals')) || ["Be Kind", "Work Hard"];
 
-function updateClockAndDate() {
+function updateDisplay() {
     const now = new Date();
+    const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const today = dayNames[now.getDay()];
+    const timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+
+    // 1. Clock & Date
     document.getElementById('clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     document.getElementById('date-header').innerText = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
-}
 
-function updateSchedule() {
-    const now = new Date();
-    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const today = days[now.getDay()];
-    const timeNow = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+    // 2. Special
+    document.getElementById('special-activity').innerText = data.specials[today] || "No Special Today";
 
-    document.getElementById('current-special-activity').innerText = dailySpecials[today] || "No Special";
-    document.getElementById('goals-list').innerHTML = learningGoals.map(g => `<li>${g}</li>`).join('');
+    // 3. Goals
+    document.getElementById('goals-list').innerHTML = data.goals.map(g => `<li>${g}</li>`).join('');
 
-    const dayType = (today === 'Monday') ? 'Monday' : 'T-F';
+    // 4. Events
+    document.getElementById('events-list').innerHTML = data.events.map(e => `<li>${e.date}: ${e.title}</li>`).join('');
+
+    // 5. Schedule Items
+    const activeSched = (today === 'Monday') ? data.schedules["Monday"] : data.schedules["T-F"];
     const list = document.getElementById('schedule-list');
     list.innerHTML = "";
-    (allSchedules[dayType] || []).forEach(item => {
+    activeSched.forEach(item => {
         const li = document.createElement('li');
-        li.innerText = `${item.time} - ${item.activity}`;
-        if (timeNow >= item.time) li.classList.add('current-activity');
+        li.innerText = `${item.t} - ${item.a}`;
+        if (timeStr >= item.t) li.classList.add('current-activity');
         list.appendChild(li);
     });
 }
 
-function updateSpecialsFromInput() {
-    const val = document.getElementById('specials-input').value;
-    let obj = {};
-    val.split('\n').forEach(l => { const p = l.split(','); if(p.length==2) obj[p[0].trim()] = p[1].trim(); });
-    dailySpecials = obj;
-    localStorage.setItem('dailySpecials', JSON.stringify(dailySpecials));
-    updateSchedule();
+function saveAllData() {
+    // Specials
+    const specLines = document.getElementById('input-specials').value.split('\n');
+    data.specials = {};
+    specLines.forEach(l => { const p = l.split(','); if(p.length==2) data.specials[p[0].trim()] = p[1].trim(); });
+
+    // Goals
+    data.goals = document.getElementById('input-goals').value.split('\n').filter(g => g.trim() !== "");
+
+    // Events
+    const eventLines = document.getElementById('input-events').value.split('\n');
+    data.events = eventLines.map(l => { const p = l.split(','); return {date:p[0]?.trim(), title:p[1]?.trim()}; }).filter(i => i.date);
+
+    // Schedule
+    const dayType = document.getElementById('day-selector').value;
+    const schedLines = document.getElementById('input-schedule').value.split('\n');
+    data.schedules[dayType] = schedLines.map(l => { const p = l.split(','); return {t:p[0]?.trim(), a:p[1]?.trim()}; }).filter(i => i.t);
+
+    localStorage.setItem('mrWestData', JSON.stringify(data));
+    updateDisplay();
+    alert("✅ iPad Updated Successfully!");
 }
 
-function updateScheduleFromInput() {
-    const day = document.getElementById('edit-day-select').value;
-    const val = document.getElementById('schedule-input').value;
-    allSchedules[day] = val.split('\n').map(l => { const p = l.split(','); return {time:p[0]?.trim(), activity:p[1]?.trim()}; }).filter(i => i.time);
-    localStorage.setItem('allSchedules', JSON.stringify(allSchedules));
-    updateSchedule();
-}
-
-function updateGoalsFromInput() {
-    learningGoals = document.getElementById('goals-input').value.split('\n').filter(g => g.trim() !== "");
-    localStorage.setItem('learningGoals', JSON.stringify(learningGoals));
-    updateSchedule();
-}
-
-function initializeInput(type) {
-    if (type === 'all' || type === 'schedule') {
-        const day = document.getElementById('edit-day-select').value;
-        document.getElementById('schedule-input').value = (allSchedules[day] || []).map(i => `${i.time},${i.activity}`).join('\n');
-    }
-    if (type === 'all') {
-        document.getElementById('specials-input').value = Object.entries(dailySpecials).map(([d, a]) => `${d},${a}`).join('\n');
-        document.getElementById('goals-input').value = learningGoals.join('\n');
-    }
+function initializeInputs() {
+    document.getElementById('input-specials').value = Object.entries(data.specials).map(([d, a]) => `${d},${a}`).join('\n');
+    document.getElementById('input-goals').value = data.goals.join('\n');
+    document.getElementById('input-events').value = data.events.map(e => `${e.date},${e.title}`).join('\n');
+    const dayType = document.getElementById('day-selector').value;
+    document.getElementById('input-schedule').value = data.schedules[dayType].map(i => `${i.t},${i.a}`).join('\n');
 }
 
 window.onload = () => {
-    updateClockAndDate();
-    updateSchedule();
-    initializeInput('all');
-    setInterval(updateClockAndDate, 1000);
-    setInterval(updateSchedule, 60000);
+    updateDisplay();
+    initializeInputs();
+    setInterval(updateDisplay, 1000);
 };
