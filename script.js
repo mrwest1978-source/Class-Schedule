@@ -71,4 +71,14 @@ window.onload = () => {
     updateDisplay();
     initializeInputs();
     setInterval(updateDisplay, 1000);
+
+    function toggleEdit() {
+    const section = document.getElementById('input-section');
+    section.classList.toggle('visible');
+    // Scroll down to see the editor if we just opened it
+    if(section.classList.contains('visible')) {
+        section.scrollIntoView({behavior: "smooth"});
+    }
+}
 };
+
