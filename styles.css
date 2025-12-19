@@ -44,3 +44,4 @@ body {
 /* HIDE EDIT SECTION BY DEFAULT TO SAVE SPACE */
 #input-section { display: none; background: #eee; padding: 15px; border-radius: 10px; margin-top: 20px; }
 #input-section.visible { display: block; }
+
